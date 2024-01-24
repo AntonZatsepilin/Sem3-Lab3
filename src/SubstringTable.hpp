@@ -9,6 +9,15 @@ class SubstringTable {
     void findMaxOccurrences();
     void printResults();
     void clear();
+    const std::vector<std::string>& getSubstrings() const { return substrings; }
+
+    const std::vector<int>& getOccurrences() const { return occurrences; }
+
+    const std::string& getInputString() const { return inputString; }
+
+    int getMinLength() const { return minLength; }
+
+    int getMaxLength() const { return maxLength; }
 
    private:
     std::string inputString;

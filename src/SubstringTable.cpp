@@ -1,4 +1,3 @@
-// SubstringTable.cpp
 #include "SubstringTable.hpp"
 
 #include <iostream>
