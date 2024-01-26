@@ -1,3 +1,7 @@
+#include <algorithm>
+#include <iostream>
+#include <map>
+#include <set>
 #include <string>
 #include <vector>
 class SubstringTable {
@@ -9,9 +13,7 @@ class SubstringTable {
     void findMaxOccurrences();
     void printResults();
     void clear();
-    const std::vector<std::string>& getSubstrings() const { return substrings; }
-
-    const std::vector<int>& getOccurrences() const { return occurrences; }
+    const std::set<std::string>& getUniqueSubstrings() const { return uniqueSubstrings; }
 
     const std::string& getInputString() const { return inputString; }
 
@@ -23,6 +25,6 @@ class SubstringTable {
     std::string inputString;
     int minLength;
     int maxLength;
-    std::vector<std::string> substrings;
-    std::vector<int> occurrences;
+    std::map<std::string, int> substringOccurrences;
+    std::set<std::string> uniqueSubstrings;
 };

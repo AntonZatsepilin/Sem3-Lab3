@@ -1,7 +1,5 @@
 #include "SubstringTable.hpp"
 
-#include <iostream>
-#include <set>
 SubstringTable::SubstringTable(const std::string& s, int lmin, int lmax)
     : inputString(s), minLength(lmin), maxLength(lmax) {}
 
@@ -9,52 +7,60 @@ void SubstringTable::buildTable() {
     for (int len = minLength; len <= maxLength; ++len) {
         for (int i = 0; i <= inputString.length() - len; ++i) {
             std::string substring = inputString.substr(i, len);
-            substrings.push_back(substring);
-            occurrences.push_back(0);
+            substringOccurrences[substring] = 0;
         }
     }
 }
 
 void SubstringTable::countOccurrences() {
-    for (int i = 0; i < inputString.length(); ++i) {
-        for (int j = 0; j < substrings.size(); ++j) {
-            if (inputString.compare(i, substrings[j].length(), substrings[j]) == 0) {
-                occurrences[j]++;
+    for (int i = 0; i <= inputString.length() - minLength; ++i) {
+        for (int len = minLength; len <= maxLength && i + len <= inputString.length(); ++len) {
+            std::string sub = inputString.substr(i, len);
+            substringOccurrences[sub]++;
+        }
+
+        for (const auto& entry : substringOccurrences) {
+            if (entry.second > 0) {
+                uniqueSubstrings.insert(entry.first);
             }
         }
     }
 }
 
 void SubstringTable::findMaxOccurrences() {
-    std::set<std::string> uniqueSubstrings;
     int maxCount = 0;
 
-    for (int count : occurrences) {
-        if (count > maxCount) {
-            maxCount = count;
-        }
-    }
-
-    for (int i = 0; i < occurrences.size(); ++i) {
-        if (occurrences[i] == maxCount) {
-            uniqueSubstrings.insert(substrings[i]);
+    for (const auto& entry : substringOccurrences) {
+        if (entry.second > maxCount) {
+            maxCount = entry.second;
         }
     }
 
     std::cout << "Substrings with maximum occurrences:" << std::endl;
-    for (const auto& substring : uniqueSubstrings) {
-        std::cout << "Substring: " << substring << ", Occurrences: " << maxCount << std::endl;
+    for (const auto& entry : substringOccurrences) {
+        if (entry.second == maxCount) {
+            std::cout << "Substring: " << entry.first << ", Occurrences: " << maxCount << std::endl;
+        }
     }
 }
 
 void SubstringTable::printResults() {
-    std::cout << "All substrings and their occurrences:" << std::endl;
-    for (int i = 0; i < occurrences.size(); ++i) {
-        std::cout << "Substring: " << substrings[i] << ", Occurrences: " << occurrences[i] << std::endl;
+    std::vector<std::pair<std::string, int>> sortedResults;
+
+    for (const auto& substring : uniqueSubstrings) {
+        sortedResults.push_back(std::make_pair(substring, substringOccurrences[substring]));
+    }
+
+    std::sort(sortedResults.rbegin(), sortedResults.rend(),
+              [](const auto& a, const auto& b) { return a.second < b.second; });
+
+    std::cout << "Unique substrings and their occurrences (in descending order):" << std::endl;
+    for (const auto& result : sortedResults) {
+        std::cout << "Substring: " << result.first << ", Occurrences: " << result.second << std::endl;
     }
 }
 
 void SubstringTable::clear() {
-    substrings.clear();
-    occurrences.clear();
+    substringOccurrences.clear();
+    uniqueSubstrings.clear();
 }

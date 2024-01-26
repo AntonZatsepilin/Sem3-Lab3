@@ -8,10 +8,3 @@ src/main.cpp
 src/SubstringTable.cpp
 src/SubstringTable.hpp
 ) 
-
-add_executable(tests
-src/doctest.h
-src/Tests.cpp
-src/SubstringTable.cpp
-src/SubstringTable.hpp
-) 
