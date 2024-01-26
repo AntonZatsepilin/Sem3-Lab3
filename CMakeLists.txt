@@ -8,3 +8,9 @@ src/main.cpp
 src/SubstringTable.cpp
 src/SubstringTable.hpp
 ) 
+
+add_executable(Tests
+src/Tests.cpp
+src/SubstringTable.cpp
+src/SubstringTable.hpp
+) 
